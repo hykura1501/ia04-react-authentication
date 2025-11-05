@@ -111,40 +111,8 @@ Frontend will run on: `http://localhost:5173`
 - `GET /user/me` - Get current user info (requires Bearer token)
 
 ## 🌐 Deployment
-
-### Frontend (Vercel/Netlify)
-1. Build: `npm run build`
-2. Set env: `VITE_API_URL=<your-backend-url>`
-3. Deploy
-
-### Backend (Render/Railway)
-1. Set environment variables (same as `.env`)
-2. Build: `npm install && npm run build`
-3. Start: `npm run start:prod`
-
-### Public URLs
 - **Frontend**: https://ia04-react-authentication-two.vercel.app/
 - **Backend API**: https://ia04-react-authentication-ue5z.onrender.com
-
-## 📝 Project Structure
-
-```
-Source/
-├── backend/          # NestJS API
-│   ├── src/
-│   │   ├── auth/     # Authentication module
-│   │   ├── user/     # User module
-│   │   └── main.ts
-│   └── package.json
-├── frontend/         # React App
-│   ├── src/
-│   │   ├── pages/    # Login, SignUp, Dashboard
-│   │   ├── services/ # API calls
-│   │   ├── types/    # TypeScript types
-│   │   └── components/
-│   └── package.json
-└── README.md
-```
 
 ## ✅ Usage
 
