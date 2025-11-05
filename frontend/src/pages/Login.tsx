@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/services/auth";
+import { PATH } from "@/constants/path";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -43,7 +44,7 @@ export function Login() {
         description: "Welcome back! Redirecting to dashboard...",
       });
       // Navigate to dashboard after successful login
-      navigate("/dashboard", { replace: true });
+      navigate(PATH.DASHBOARD, { replace: true });
     },
     onError: (err: unknown) => {
       const axiosError = err as { response?: { data?: { message?: string } }; message?: string };
@@ -110,12 +111,12 @@ export function Login() {
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
-              <Link to="/signup" className="text-blue-600 hover:underline">
+              <Link to={PATH.SIGNUP} className="text-blue-600 hover:underline">
                 Sign up
               </Link>
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              <Link to="/" className="text-blue-600 hover:underline">
+              <Link to={PATH.HOME} className="text-blue-600 hover:underline">
                 ← Back to Home
               </Link>
             </p>

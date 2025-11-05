@@ -6,6 +6,7 @@ import { SignUp } from "@/pages/SignUp";
 import { Dashboard } from "@/pages/Dashboard";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Toaster } from "@/components/ui/toaster";
+import { PATH } from "@/constants/path";
 
 // Configure React Query client with default options
 const queryClient = new QueryClient({
@@ -27,11 +28,11 @@ function App() {
       <Router>
         <div className="min-h-screen bg-gray-50">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path={PATH.HOME} element={<Home />} />
+            <Route path={PATH.LOGIN} element={<Login />} />
+            <Route path={PATH.SIGNUP} element={<SignUp />} />
             <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path={PATH.DASHBOARD} element={<Dashboard />} />
             </Route>
           </Routes>
           <Toaster />

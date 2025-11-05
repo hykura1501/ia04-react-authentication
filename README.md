@@ -123,8 +123,8 @@ Frontend will run on: `http://localhost:5173`
 3. Start: `npm run start:prod`
 
 ### Public URLs
-- **Frontend**: [Add your deployed frontend URL here]
-- **Backend API**: [Add your deployed backend URL here]
+- **Frontend**: https://ia04-react-authentication-two.vercel.app/
+- **Backend API**: https://ia04-react-authentication-ue5z.onrender.com
 
 ## 📝 Project Structure
 

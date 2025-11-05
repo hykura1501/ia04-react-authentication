@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { PATH } from "@/constants/path";
 
 export function Dashboard() {
   const queryClient = useQueryClient();
@@ -41,7 +42,7 @@ export function Dashboard() {
         description: "You have been logged out of your account",
       });
       // Redirect to login page
-      navigate("/login", { replace: true });
+      navigate(PATH.LOGIN, { replace: true });
     },
     onError: (error: unknown) => {
       // Even if logout fails on backend, clear cache and redirect
@@ -54,7 +55,7 @@ export function Dashboard() {
         description: message,
         variant: "destructive",
       });
-      navigate("/login", { replace: true });
+      navigate(PATH.LOGIN, { replace: true });
     },
   });
 
@@ -81,7 +82,7 @@ export function Dashboard() {
           {isError && (
             <div className="text-center py-4">
               <p className="text-red-500">
-                Failed to load profile.{" "}
+                Failed to load profile. {" "}
                 {error instanceof Error ? error.message : "Unknown error"}
               </p>
             </div>

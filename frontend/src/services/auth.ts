@@ -8,6 +8,7 @@ import type {
   LoginResponse,
   UserResponse,
 } from "@/types";
+import { ENDPOINT } from "@/constants/endpoint";
 
 export const authApi = {
   /**
@@ -15,7 +16,7 @@ export const authApi = {
    * Stores access token in memory and refresh token in localStorage
    */
   async login(input: LoginInput): Promise<Tokens> {
-    const { data } = await http.post<LoginResponse>("/auth/login", input);
+    const { data } = await http.post<LoginResponse>(ENDPOINT.AUTH.LOGIN, input);
     const tokens: Tokens = data.data;
     // Store tokens
     tokenStore.setAccess(tokens.accessToken);
@@ -27,7 +28,7 @@ export const authApi = {
    * Register a new user
    */
   async register(input: RegisterInput): Promise<RegisterResponse> {
-    const { data } = await http.post<RegisterResponse>("/auth/register", input);
+    const { data } = await http.post<RegisterResponse>(ENDPOINT.AUTH.REGISTER, input);
     return data;
   },
 
@@ -36,7 +37,7 @@ export const authApi = {
    */
   async logout(): Promise<void> {
     try {
-      await http.post("/auth/logout");
+      await http.post(ENDPOINT.AUTH.LOGOUT);
     } catch (error) {
       // Even if logout fails on backend, clear tokens on client
       console.error("Logout error:", error);
@@ -51,7 +52,7 @@ export const authApi = {
    * Requires valid access token
    */
   async me(): Promise<User> {
-    const { data } = await http.get<UserResponse>("/user/me");
+    const { data } = await http.get<UserResponse>(ENDPOINT.USER.ME);
     return data.data;
   },
 };

@@ -1,5 +1,7 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { API_BASE_URL } from "@/config/api";
+import { ENDPOINT } from "@/constants/endpoint";
+import { PATH } from "@/constants/path";
 
 // Store access token in memory (not in localStorage)
 let inMemoryAccessToken: string | null = null;
@@ -49,8 +51,8 @@ http.interceptors.request.use(
 // Response interceptor: Handle 401 errors and refresh tokens
 let isRefreshing = false;
 let failedQueue: Array<{
-  resolve: (value?: any) => void;
-  reject: (reason?: any) => void;
+  resolve: (value?: string | null) => void;
+  reject: (reason?: unknown) => void;
 }> = [];
 
 const processQueue = (error: AxiosError | null, token: string | null = null) => {
@@ -64,13 +66,29 @@ const processQueue = (error: AxiosError | null, token: string | null = null) => 
   failedQueue = [];
 };
 
+// List of public endpoints that should not trigger token refresh
+const publicEndpoints = [ENDPOINT.AUTH.LOGIN, ENDPOINT.AUTH.REGISTER, ENDPOINT.AUTH.REFRESH];
+
+const isPublicEndpoint = (url: string | undefined): boolean => {
+  if (!url) return false;
+  return publicEndpoints.some((endpoint) => url.includes(endpoint));
+};
+
 http.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
     // If error is 401 and we haven't tried to refresh yet
-    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+    // AND it's not a public endpoint (login/register/refresh)
+    // AND we have a refresh token (user is authenticated)
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry &&
+      !isPublicEndpoint(originalRequest.url) &&
+      tokenStore.getRefresh()
+    ) {
       if (isRefreshing) {
         // If already refreshing, queue this request
         return new Promise((resolve, reject) => {
@@ -99,7 +117,7 @@ http.interceptors.response.use(
         isRefreshing = false;
         // Redirect to login if we're in browser
         if (typeof window !== "undefined") {
-          window.location.href = "/login";
+          window.location.href = PATH.LOGIN;
         }
         return Promise.reject(error);
       }
@@ -107,7 +125,7 @@ http.interceptors.response.use(
       try {
         // Try to refresh the token
         const response = await axios.post(
-          `${API_BASE_URL}/auth/refresh`,
+          `${API_BASE_URL}${ENDPOINT.AUTH.REFRESH}`,
           { refreshToken },
           {
             headers: {
@@ -140,7 +158,7 @@ http.interceptors.response.use(
 
         // Redirect to login if we're in browser
         if (typeof window !== "undefined") {
-          window.location.href = "/login";
+          window.location.href = PATH.LOGIN;
         }
 
         return Promise.reject(refreshError);

@@ -16,6 +16,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/services/auth";
 import type { RegisterInput } from "@/types";
+import { PATH } from "@/constants/path";
 
 const signUpSchema = z
   .object({
@@ -53,7 +54,7 @@ export function SignUp() {
       reset();
       // Redirect to login page after successful registration
       setTimeout(() => {
-        navigate("/login", { replace: true });
+        navigate(PATH.LOGIN, { replace: true });
       }, 1500);
     },
     onError: (error: unknown) => {
@@ -144,12 +145,12 @@ export function SignUp() {
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <Link to="/login" className="text-blue-600 hover:underline">
+              <Link to={PATH.LOGIN} className="text-blue-600 hover:underline">
                 Login
               </Link>
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              <Link to="/" className="text-blue-600 hover:underline">
+              <Link to={PATH.HOME} className="text-blue-600 hover:underline">
                 ← Back to Home
               </Link>
             </p>

@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { tokenStore } from "@/services/http";
+import { PATH } from "@/constants/path";
 
 /**
  * ProtectedRoute component
@@ -13,7 +14,7 @@ export function ProtectedRoute() {
 
   if (!hasRefreshToken) {
     // No refresh token, redirect to login
-    return <Navigate to="/login" replace />;
+    return <Navigate to={PATH.LOGIN} replace />;
   }
 
   // User has refresh token, allow access
